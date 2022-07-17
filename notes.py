@@ -13,11 +13,17 @@ OUTPUT=os.path.join(HERE, "dist")
 # Mask to parse:
 # Friday, September 22, 2017 at 1:00:52 AM
 DATETIME_IMPORT_MASK='%A, %B %d, %Y at %I:%M:%S %p'
+DATETIME_IMPORT_MASK_24H='%A, %B %d, %Y at %H:%M:%S'
 DATETIME_SAVE_MASK='%Y-%m-%dT%H:%M:%SZ'
 
 
 def get_datetime_string(string):
-    dt_obj = datetime.strptime(string, DATETIME_IMPORT_MASK)
+    try:
+        dt_obj = datetime.strptime(string, DATETIME_IMPORT_MASK)
+    except ValueError:
+        # 24h time
+        dt_obj = datetime.strptime(string, DATETIME_IMPORT_MASK_24H)
+
     return dt_obj.strftime(DATETIME_SAVE_MASK)
 
 
